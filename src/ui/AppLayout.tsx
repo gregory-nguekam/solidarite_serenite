@@ -1,10 +1,10 @@
-import { AppBar, Box, Button, Container, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Button, Container, Toolbar } from "@mui/material";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import { Footer } from "./Footer";
 
 export function AppLayout() {
-  const { user, logout } = useAuth();
+  const { user, /*logout*/ } = useAuth();
   const navigate = useNavigate();
 
   return (

@@ -12,7 +12,6 @@ import TelegramIcon from "@mui/icons-material/Telegram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-import HomeIcon from "@mui/icons-material/Home";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import { Link as RouterLink } from "react-router-dom";
@@ -51,7 +50,7 @@ export function Footer() {
           }}
         >
           {/* LEFT - Social icons */}
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Typography sx={{ fontWeight: 800, color: "#000000", mb: 1 }}>
               Suivez-nous
             </Typography>
@@ -120,7 +119,7 @@ export function Footer() {
           </Grid>
 
           {/* CENTER - Useful links */}
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Typography sx={{ fontWeight: 800, color: "", mb: 1 }}>
               Liens utiles
             </Typography>
@@ -147,7 +146,7 @@ export function Footer() {
           </Grid>
 
           {/* RIGHT - Contact */}
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Typography sx={{ fontWeight: 800, color: "#000000", mb: 1 }}>
               Contact
             </Typography>

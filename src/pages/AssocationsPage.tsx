@@ -16,7 +16,7 @@ export default function AssociationsPage() {
 
       <Grid container spacing={2}>
         {associations.map((a) => (
-          <Grid item xs={12} md={6} key={a.id}>
+          <Grid size={{ xs: 12, md: 6 }} key={a.id}>
             <Card>
               <CardContent>
                 <Typography sx={{ fontWeight: 800 }}>{a.name}</Typography>

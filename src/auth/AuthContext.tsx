@@ -22,7 +22,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("auth", JSON.stringify(next));
   };
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, _password: string) => {
     // MOCK: pour la démo, password ignoré.
     // Tu peux mapper certains emails à des rôles pour montrer les permissions.
     const role: Role =
