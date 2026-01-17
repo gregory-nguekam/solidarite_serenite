@@ -5,7 +5,7 @@ type User = { id: string; email: string; fullName: string; role: Role };
 type AuthState = { user: User | null; token: string | null };
 
 type AuthContextValue = AuthState & {
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, _password: string) => Promise<void>;
   logout: () => void;
 };
 
@@ -22,7 +22,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("auth", JSON.stringify(next));
   };
 
-  const login = async (email: string, _password: string) => {
+  const login = async (email: string, /*_password: string*/) => {
     // MOCK: pour la démo, password ignoré.
     // Tu peux mapper certains emails à des rôles pour montrer les permissions.
     const role: Role =

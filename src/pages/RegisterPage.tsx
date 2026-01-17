@@ -23,7 +23,7 @@ export default function RegisterPage() {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = async (_: FormData) => {
+  const onSubmit = async () => {
     // MOCK: on simule juste l’inscription puis redirection login
     navigate("/login");
   };

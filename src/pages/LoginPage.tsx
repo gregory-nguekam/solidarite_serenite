@@ -30,8 +30,11 @@ export default function LoginPage() {
     try {
       await login(data.email, data.password);
       navigate("/app/associations");
-    } catch (e) {
-      setError("Échec de connexion.");
+    } catch (error) {
+      const message = error instanceof Error && error.message
+        ? error.message
+        : "Échec de connexion.";
+      setError(message);
     } finally {
       setLoading(false);
     }
