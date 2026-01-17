@@ -18,7 +18,7 @@ export const associations: Association[] = [
   },
   {
     id: "g1",
-    name: "Groupe Bamenda Île-de-France",
+    name: "Groupe Haut-Nkam Île-de-France",
     type: "GROUPE",
     city: "Créteil",
     membersCount: 42,
@@ -26,7 +26,7 @@ export const associations: Association[] = [
   },
   {
     id: "f1",
-    name: "Famille Ndzié",
+    name: "Association Menoua",
     type: "FAMILLE",
     city: "Lyon",
     membersCount: 9,

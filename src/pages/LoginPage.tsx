@@ -29,7 +29,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(data.email, data.password);
-      navigate("/app/associations");
+      navigate("/homeLogin");
     } catch (error) {
       const message = error instanceof Error && error.message
         ? error.message

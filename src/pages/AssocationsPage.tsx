@@ -1,4 +1,5 @@
-import { Button, Card, CardContent, Chip, Grid, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Chip, Grid, InputAdornment, TextField, Typography } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
 import { associations } from "../api/mock";
 import { useAuth } from "../auth/AuthContext";
@@ -10,9 +11,23 @@ export default function AssociationsPage() {
 
   return (
     <>
-      <Typography variant="h5" sx={{ fontWeight: 800, mb: 2 }}>
-        Associations / Groupes / Familles
-      </Typography>
+      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 2, mb: 2 }}>
+        <Typography variant="h5" sx={{ fontWeight: 800 }}>
+          Associations / Groupes / Familles
+        </Typography>
+        <TextField
+          size="small"
+          placeholder="Rechercher..."
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon fontSize="small" />
+              </InputAdornment>
+            ),
+          }}
+          sx={{ minWidth: 400 }}
+        />
+      </Box>
 
       <Grid container spacing={2}>
         {associations.map((a) => (

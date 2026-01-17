@@ -61,7 +61,7 @@ export default function HomePage() {
             </Card>
 
             <Card sx={{ flex: 1 }}>
-              <CardActionArea component={RouterLink} to="/register">
+              <CardActionArea component={RouterLink} to="/registerAssociation">
                 <CardContent>
                   <Typography sx={{ fontWeight: 900, mb: 1 }}>
                     Inscription membre
@@ -74,7 +74,7 @@ export default function HomePage() {
             </Card>
 
             <Card sx={{ flex: 1 }}>
-              <CardActionArea component={RouterLink} to="/registerAssociation">
+              <CardActionArea component={RouterLink} to="/register">
                 <CardContent>
                   <Typography sx={{ fontWeight: 900, mb: 1 }}>
                     Inscription direct

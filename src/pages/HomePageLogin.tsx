@@ -18,15 +18,6 @@ export default function HomePage() {
            Solidarité et Sérénité
           </Typography>
 
-          <Typography sx={{ maxWidth: 820, opacity: 0.85, fontSize: 18 }}>
-            Un ensemble d’associations communautaires de l'Ouest se sont regroupées pour mettre en place une mutuelle pour garantir le rapatriement en cas de décès d’un membre ou d’un parent 
-          </Typography>
-
-          <Typography sx={{ maxWidth: 820, opacity: 0.85, fontSize: 18 }}>
-            Plateforme de gestion des adhésions, associations et groupes, avec accès
-            sécurisé selon vos permissions.
-          </Typography>
-
           <Typography sx={{ maxWidth: 1080, opacity: 0.85, fontSize: 18 }}>
             Notre objectif est de fournir plusieurs services : <br />
             - Soutien Financier mettre à disposition de la famille une enveloppe de l’ordre de 10 mil euros pour couvrir les frais de rapatriement <br />
@@ -75,7 +66,7 @@ export default function HomePage() {
               <CardActionArea component={RouterLink} to="/roles">
                 <CardContent>
                   <Typography sx={{ fontWeight: 900, mb: 1 }}>
-                    Accès par rôle
+                    Gestion des utilisateurs
                   </Typography>
                   <Typography sx={{ opacity: 0.85 }}>
                     L’interface s’adapte au profil : visiteur, membre,
@@ -86,10 +77,10 @@ export default function HomePage() {
             </Card>
 
             <Card sx={{ flex: 1 }}>
-              <CardActionArea component={RouterLink} to="/admin">
+              <CardActionArea component={RouterLink} to="/app/associations">
                 <CardContent>
                   <Typography sx={{ fontWeight: 900, mb: 1 }}>
-                    Administration & Gestion
+                    Administration & Gestion des associations 
                   </Typography>
                   <Typography sx={{ opacity: 0.85 }}>
                     Consultation des informations et gestion des adhérents selon
