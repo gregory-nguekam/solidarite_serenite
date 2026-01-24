@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
 import type { Role } from "./roles";
+import { login as apiLogin, me as apiMe } from "../api/auth";
 
 type User = { id: string; email: string; fullName: string; role: Role };
 type AuthState = { user: User | null; token: string | null };
 
 type AuthContextValue = AuthState & {
-  login: (email: string, _password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 };
 
@@ -22,23 +23,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("auth", JSON.stringify(next));
   };
 
-  const login = async (email: string, /*_password: string*/) => {
-    // MOCK: pour la démo, password ignoré.
-    // Tu peux mapper certains emails à des rôles pour montrer les permissions.
-    const role: Role =
-      email.includes("admin") ? "ADMIN" : email.includes("member") ? "MEMBER" : "VISITOR";
-
-    const user: User = {
-      id: crypto.randomUUID(),
-      email,
-      fullName: role === "ADMIN" ? "Admin Démo" : role === "MEMBER" ? "Membre Démo" : "Visiteur Démo",
+  const normalizeUser = (payload: Partial<User> & { name?: string; _id?: string }) => {
+    const role = payload.role ?? "VISITOR";
+    return {
+      id: payload.id ?? payload._id ?? crypto.randomUUID(),
+      email: payload.email ?? "",
+      fullName: payload.fullName ?? payload.name ?? payload.email ?? "Utilisateur",
       role,
-    };
-
-    persist({ user, token: "mock-jwt-token" });
+    } satisfies User;
   };
 
-  const logout = () => persist({ user: null, token: null });
+  const login = async (email: string, password: string) => {
+    const token = await apiLogin(email, password);
+    const mePayload = (await apiMe(token)) as Partial<User> & { name?: string; _id?: string };
+    const user = normalizeUser(mePayload);
+    persist({ user, token });
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    persist({ user: null, token: null });
+  };
 
   const value = useMemo(() => ({ ...state, login, logout }), [state]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

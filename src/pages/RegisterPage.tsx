@@ -1,14 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Card, CardContent, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Card, CardContent, CircularProgress, TextField, Typography } from "@mui/material";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Link, useNavigate } from "react-router-dom";
+import { registerAdherent } from "../api/auth";
 
 const schema = z.object({
-  lastName: z.string().min(2),
-  firstName: z.string().min(2),
+  nom: z.string().min(2),
+  prenom: z.string().min(2),
   email: z.string().email(),
-  phone: z.string().min(6),
+  telephone: z.string().min(6),
   street: z.string().min(2),
   zip_code: z.string().min(5),
   hobby: z.string().optional(),
@@ -19,13 +21,27 @@ type FormData = z.infer<typeof schema>;
 
 export default function RegisterPage() {
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = async () => {
-    // MOCK: on simule juste l’inscription puis redirection login
-    navigate("/login");
+  const onSubmit = async (data: FormData) => {
+    setError(null);
+    setLoading(true);
+    try { 
+      const { street, zip_code, hobby, additional_address_info, ...payload } = data;
+      await registerAdherent(payload);
+      navigate("/login");
+    } catch (error) {
+      const message = error instanceof Error && error.message
+        ? error.message 
+        : "Échec d'inscription.";
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,21 +56,19 @@ export default function RegisterPage() {
           </Typography>
 
           <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: "grid", gap: 2 }}>
+            {error && <Alert severity="error">{error}</Alert>}
             <Box sx={{ display: "grid", gap: 2, gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" } }}>
-              <TextField label="Nom" {...register("lastName")} error={!!errors.lastName} helperText={errors.lastName?.message}/>
-              <TextField label="Prénom" {...register("firstName")} error={!!errors.firstName} helperText={errors.firstName?.message}/>
-              <TextField label="Téléphone" {...register("phone")} error={!!errors.phone} helperText={errors.phone?.message}/>
+              <TextField label="Nom" {...register("nom")} error={!!errors.nom} helperText={errors.nom?.message}/>
+              <TextField label="Prénom" {...register("prenom")} error={!!errors.prenom} helperText={errors.prenom?.message}/>
+              <TextField label="Téléphone" {...register("telephone")} error={!!errors.telephone} helperText={errors.telephone?.message}/>
               <TextField label="Email" {...register("email")} error={!!errors.email} helperText={errors.email?.message} />
               <TextField label="Rue et numéro" {...register("street")} error={!!errors.street} helperText={errors.street?.message} />
               <TextField label="Complément d'adresse" {...register("additional_address_info")} error={!!errors.additional_address_info} helperText={errors.additional_address_info?.message} />
               <TextField label="Code postal" {...register("zip_code")} error={!!errors.zip_code} helperText={errors.zip_code?.message} />
               <TextField label="Centre d'intérêt" {...register("hobby")} error={!!errors.hobby} helperText={errors.hobby?.message} />
-    
-
             </Box>
 
-            
-
+        
             <Box sx={{ display: "grid", gap: 1 }}>
               <Typography sx={{ fontWeight: 700 }}>Pièce d’identité</Typography>
               <input type="file" accept="image/*,.pdf" />
@@ -64,8 +78,8 @@ export default function RegisterPage() {
               <input type="file" accept="image/*,.pdf" />
             </Box>
 
-            <Button type="submit" variant="contained" size="large">
-              Créer le compte
+            <Button type="submit" variant="contained" size="large" disabled={loading}>
+              {loading ? <CircularProgress size={22} /> : "Créer le compte"}
             </Button>
 
             <Typography sx={{ mt: 1, opacity: 0.9 }}>

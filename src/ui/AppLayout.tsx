@@ -21,7 +21,7 @@ export function AppLayout() {
           <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
             <Box
               component="img"
-              src="/logo1.png"
+              src="/solidarite_serenite.jpeg"
               alt="Solidarité & sérénité"
               sx={{ height: 100, width: 100 }}
               onClick={() => {navigate("/"); }}
@@ -46,12 +46,6 @@ export function AppLayout() {
                 </Box>
               )}
             </Box>
-            <Box
-              component="img"
-              src="/logo2.png"
-              alt="Solidarité & sérénité"
-              sx={{ height: 100, width: 100 }}
-            />
           </Box>
         </Toolbar>
       </AppBar>
