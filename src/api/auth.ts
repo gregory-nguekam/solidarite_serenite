@@ -47,11 +47,10 @@ export async function me(token?: string) {
   return res.json();
 }
 
-export async function registerAdherent(payload: Record<string, unknown>) {
-  const res = await fetch(buildUrl("/api/auth/register-adherent"), {
+export async function registerAdherent(payload: FormData) {
+  const res = await fetch(buildUrl("/api/adherent/register"), {
     method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify(payload),
+    body: payload,
   });
   if (!res.ok) {
     throw new Error(await readErrorMessage(res));
@@ -60,4 +59,27 @@ export async function registerAdherent(payload: Record<string, unknown>) {
   const token = data.token ?? data.accessToken ?? data.jwt;
   if (token) localStorage.setItem("token", token);
   return data;
+}
+
+export async function requestPasswordReset(email: string) {
+  const res = await fetch(buildUrl("/api/auth/forgot-password"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({ email }),
+  });
+  if (!res.ok) {
+    throw new Error(await readErrorMessage(res));
+  }
+  return res.json();
+}
+
+
+export async function test() {
+  const res = await fetch(buildUrl("/api/adherent/test"), {
+  });
+  console.log(res, " : voici la réponse");
+  if (!res.ok) {
+    throw new Error(await readErrorMessage(res));
+  }
+  return res.json();
 }

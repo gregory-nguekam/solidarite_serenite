@@ -1,11 +1,26 @@
-import { AppBar, Box, Button, Container, Toolbar } from "@mui/material";
+﻿import { AppBar, Box, Button, Container, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
+import { useState, type MouseEvent } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import { Footer } from "./Footer";
 
 export function AppLayout() {
-  const { user, /*logout*/ } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+
+  const handleMenuOpen = (event: MouseEvent<HTMLElement>) => {
+    setMenuAnchor(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setMenuAnchor(null);
+  };
+
+  const handleNavigate = (path: string) => {
+    navigate(path);
+    handleMenuClose();
+  };
 
   return (
     <Box
@@ -13,7 +28,6 @@ export function AppLayout() {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        bgcolor: "#52a447",
       }}
     >
       <AppBar position="static" sx={{ bgcolor: "green" }}>
@@ -23,26 +37,33 @@ export function AppLayout() {
               component="img"
               src="/solidarite_serenite.jpeg"
               alt="Solidarité & sérénité"
-              sx={{ height: 100, width: 100 }}
+              sx={{ height: 150, width: 150 }}
               onClick={() => {navigate("/"); }}
             />
             <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "right" }}>
-              {user && (
-                <Box>
-                  {/* <Typography sx={{ mr: 2, opacity: 0.9 }}>
-                    {user.fullName}
-                  </Typography> */}
+              {user ? (
+                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                  <Typography sx={{ fontWeight: 600, color: "white" }}>{user.fullName}</Typography>
                   <Button
                     color="inherit"
                     onClick={() => {
-                      navigate("/login");
+                      logout();
+                      navigate("/");
                     }}
                   >
-                    Connexion
-                  </Button>
-                  {/* <Button color="inherit" onClick={() => { logout(); navigate("/login"); }}>
                     Déconnexion
-                  </Button> */}
+                  </Button>
+                </Box>
+              ) : (
+                <Box>
+                  <Button color="inherit" onClick={handleMenuOpen}>
+                    Accès
+                  </Button>
+                  <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={handleMenuClose}>
+                    <MenuItem onClick={() => handleNavigate("/login")}>Connexion</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/registerAssociation")}>Inscription membre</MenuItem>
+                    <MenuItem onClick={() => handleNavigate("/register")}>Inscription adhérent</MenuItem>
+                  </Menu>
                 </Box>
               )}
             </Box>
@@ -58,3 +79,7 @@ export function AppLayout() {
     
   );
 }
+
+
+
+
