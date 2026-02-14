@@ -11,8 +11,8 @@ export default function AssociationDetailsPage() {
 
   if (!assoc) return <Alert severity="error">Association introuvable</Alert>;
 
-  const canSeeSensitive = user ? hasAtLeastRole(user.role, "MEMBER") : false;
-  const isAdmin = user ? hasAtLeastRole(user.role, "ADMIN") : false;
+  const canSeeSensitive = user ? hasAtLeastRole(user.role, "MEMBRE") : false;
+  const isAdmin = user ? hasAtLeastRole(user.role, "ADMIN_MEMBRE") : false;
 
   return (
     <Card>

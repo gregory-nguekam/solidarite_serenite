@@ -6,7 +6,7 @@ import { hasAtLeastRole } from "../auth/roles";
 
 export default function AssociationsPage() {
   const { user } = useAuth();
-  const canManage = user ? hasAtLeastRole(user.role, "MEMBER") : false;
+  const canManage = user ? hasAtLeastRole(user.role, "MEMBRE") : false;
 
   return (
     <>

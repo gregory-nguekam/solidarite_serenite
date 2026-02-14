@@ -63,7 +63,7 @@ export default function HomePage() {
             sx={{ width: "100%", mt: 3 }}
           >
             <Card sx={{ flex: 1 }}>
-              <CardActionArea component={RouterLink} to="/roles">
+              <CardActionArea component={RouterLink} to="/app/admin/users">
                 <CardContent>
                   <Typography sx={{ fontWeight: 900, mb: 1 }}>
                     Gestion des utilisateurs

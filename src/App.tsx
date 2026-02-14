@@ -11,11 +11,12 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import HomePage from "./pages/HomePage";
 import HomePageLogin from "./pages/HomePageLogin";
 import RegisterAssociationPage from "./pages/RegisterAssociationPage";
+import UserManagementPage from "./pages/UserManagementPage";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#52a447",
+      main: "#0b562e",
     },
   },
 });
@@ -45,6 +46,14 @@ export default function App() {
             >
               <Route path="associations" element={<AssociationsPage />} />
               <Route path="associations/:id" element={<AssociationDetailsPage />} />
+              <Route
+                path="admin/users"
+                element={
+                  <ProtectedRoute minRole="SUPER_ADMIN">
+                    <UserManagementPage />
+                  </ProtectedRoute>
+                }
+              />
             </Route>
 
             <Route

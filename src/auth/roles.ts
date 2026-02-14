@@ -1,9 +1,10 @@
-export type Role = "VISITOR" | "MEMBER" | "ADMIN";
+export type Role = "VISITOR" | "ADHERENT" | "SUPER_ADMIN" | "ADMIN_MEMBRE";
 
 export const roleRank: Record<Role, number> = {
   VISITOR: 0,
-  MEMBER: 1,
-  ADMIN: 2,
+  ADHERENT: 1,
+  ADMIN_MEMBRE: 2,
+  SUPER_ADMIN: 3, 
 };
 
 export function hasAtLeastRole(userRole: Role, required: Role) {

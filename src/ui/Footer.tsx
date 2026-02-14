@@ -33,7 +33,7 @@ export function Footer() {
       sx={{
         mt: 0,
         mb: 0,
-        bgcolor: "green",
+        bgcolor: "#0b562e",
         borderTop: "1px solid rgba(25, 45, 90, 0.12)",
       }}
     >

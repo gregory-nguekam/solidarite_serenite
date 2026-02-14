@@ -19,13 +19,15 @@ import {
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { registerAdherent } from "../api/auth";
 
 const schema = z.object({
   nom: z.string().min(2),
   prenom: z.string().min(2),
   email: z.string().email(),
+  password: z.string().min(6, "Le mot de passe doit contenir au moins 6 caracteres."),
+  password_confirm: z.string().min(6, "Veuillez confirmer le mot de passe."),
   telephone: z.string().min(6),
   numero_rue: z.string().min(1),
   rue: z.string().min(5),
@@ -50,6 +52,14 @@ const schema = z.object({
   card_expiry: z.string().optional(),
   card_cvc: z.string().optional(),
 }).superRefine((data, ctx) => {
+  if (data.password !== data.password_confirm) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["password_confirm"],
+      message: "Les mots de passe ne correspondent pas.",
+    });
+  }
+
   if (data.payment_method !== "card") return;
 
   if (!data.card_name || data.card_name.trim().length < 2) {
@@ -95,8 +105,8 @@ const subscriptionFee = 100; // Frais fixes de souscription
 type FormData = z.infer<typeof schema>;
 
 export default function RegisterPage() {
-  const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -116,12 +126,14 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: FormData) => {
     setError(null);
+    setSuccess(null);
     setLoading(true);
     try {
       const formData = new FormData();
       formData.append("nom", data.nom);
       formData.append("prenom", data.prenom);
       formData.append("email", data.email);
+      formData.append("password", data.password);
       formData.append("telephone", data.telephone);
       formData.append("adresse.numeroRue", data.numero_rue);
       formData.append("adresse.rue", data.rue);
@@ -138,7 +150,9 @@ export default function RegisterPage() {
 
       //await test()
       await registerAdherent(formData);
-      navigate("/login");
+      setSuccess(
+        "Votre inscription a bien ete prise en compte. Un email a ete envoye pour confirmer que votre inscription est en cours de validation."
+      );
     } catch (error) {
       const message = error instanceof Error && error.message
         ? error.message 
@@ -184,6 +198,22 @@ export default function RegisterPage() {
                   <TextField label="Prénom" {...register("prenom")} error={!!errors.prenom} helperText={errors.prenom?.message} />
                   <TextField label="Téléphone" {...register("telephone")} error={!!errors.telephone} helperText={errors.telephone?.message} />
                   <TextField label="Email" type="email" {...register("email")} error={!!errors.email} helperText={errors.email?.message} />
+                  <TextField
+                    label="Mot de passe"
+                    type="password"
+                    autoComplete="new-password"
+                    {...register("password")}
+                    error={!!errors.password}
+                    helperText={errors.password?.message}
+                  />
+                  <TextField
+                    label="Confirmer le mot de passe"
+                    type="password"
+                    autoComplete="new-password"
+                    {...register("password_confirm")}
+                    error={!!errors.password_confirm}
+                    helperText={errors.password_confirm?.message}
+                  />
                   <TextField label="Numéro rue" {...register("numero_rue")} error={!!errors.numero_rue} helperText={errors.numero_rue?.message} />
                   <TextField label="Rue" {...register("rue")} error={!!errors.rue} helperText={errors.rue?.message} />
                   <TextField
@@ -194,6 +224,7 @@ export default function RegisterPage() {
                   />
                   <TextField label="Code postal" {...register("code_postal")} error={!!errors.code_postal} helperText={errors.code_postal?.message} />
                   <TextField label="Ville" {...register("ville")} error={!!errors.ville} helperText={errors.ville?.message} />
+                  
                 </Box>
                 <Divider />
                 <Box sx={{ display: "grid", gap: 1.5 }}>
@@ -407,6 +438,7 @@ export default function RegisterPage() {
             <Button type="submit" variant="contained" size="large" disabled={loading}>
               {loading ? <CircularProgress size={22} /> : "Créer le compte"}
             </Button>
+            {success && <Alert severity="success">{success}</Alert>}
 
             <Typography sx={{ mt: 1, opacity: 0.9 }}>
               Déjà un compte ? <Link to="/login">Se connecter</Link>

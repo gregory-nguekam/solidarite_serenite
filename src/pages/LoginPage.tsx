@@ -118,7 +118,7 @@ export default function LoginPage() {
             </Typography>
 
             <Typography variant="caption" sx={{ opacity: 0.7 }}>
-              Astuce démo : admin@demo.com → ADMIN, member@demo.com → MEMBER, autre → VISITOR
+              Astuce demo : admin@demo.com - SUPER_ADMIN, membre@demo.com - MEMBRE, autre - VISITOR
             </Typography>
           </Box>
           {showReset && (
@@ -172,3 +172,4 @@ export default function LoginPage() {
     </Box>
   );
 }
+

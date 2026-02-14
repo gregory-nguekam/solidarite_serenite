@@ -61,6 +61,20 @@ export async function registerAdherent(payload: FormData) {
   return data;
 }
 
+export async function registerMembre(payload: FormData) {
+  const res = await fetch(buildUrl("/api/membre/register"), {
+    method: "POST",
+    body: payload,
+  });
+  if (!res.ok) {
+    throw new Error(await readErrorMessage(res));
+  }
+  const data = (await res.json()) as { token?: string; accessToken?: string; jwt?: string };
+  const token = data.token ?? data.accessToken ?? data.jwt;
+  if (token) localStorage.setItem("token", token);
+  return data;
+}
+
 export async function requestPasswordReset(email: string) {
   const res = await fetch(buildUrl("/api/auth/forgot-password"), {
     method: "POST",

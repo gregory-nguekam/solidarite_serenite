@@ -2,12 +2,14 @@
 import { useState, type MouseEvent } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import { hasAtLeastRole } from "../auth/roles";
 import { Footer } from "./Footer";
 
 export function AppLayout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+  const isAdmin = user ? hasAtLeastRole(user.role, "SUPER_ADMIN") : false;
 
   const handleMenuOpen = (event: MouseEvent<HTMLElement>) => {
     setMenuAnchor(event.currentTarget);
@@ -30,7 +32,7 @@ export function AppLayout() {
         flexDirection: "column",
       }}
     >
-      <AppBar position="static" sx={{ bgcolor: "green" }}>
+      <AppBar position="static">
         <Toolbar>
           <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
             <Box
@@ -38,12 +40,17 @@ export function AppLayout() {
               src="/solidarite_serenite.jpeg"
               alt="Solidarité & sérénité"
               sx={{ height: 150, width: 150 }}
-              onClick={() => {navigate("/"); }}
+              onClick={() => {navigate("/homeLogin"); }}
             />
             <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "right" }}>
               {user ? (
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                   <Typography sx={{ fontWeight: 600, color: "white" }}>{user.fullName}</Typography>
+                  {isAdmin && (
+                    <Button color="inherit" onClick={() => navigate("/app/admin/users")}>
+                      Gestion utilisateurs
+                    </Button>
+                  )}
                   <Button
                     color="inherit"
                     onClick={() => {
@@ -79,7 +86,6 @@ export function AppLayout() {
     
   );
 }
-
 
 
 
